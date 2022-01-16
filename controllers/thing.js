@@ -1,14 +1,25 @@
-const Thing = require('../models/thing');
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
+const Thing = require('../models/thing');
 
 exports.createThing = (req, res, next) => {
+    console.log(req.file)
+    //not thing, sauce
+    const data = JSON.parse(req.body.sauce)
+
+    const file = 'http://localhost:3000/' + req.file.path
+
     const thing = new Thing({
-        title: req.body.title,
-        description: req.body.description,
-        imageUrl: req.body.imageUrl,
-        userId: req.body.userId
+        name: data.name,
+        manufacturer: data.manufacturer,
+        description: data.description,
+        imageUrl: file,
+        mainPepper: data.mainPepper,
+        heat: data.heat,
+        userId: data.userId
     });
+
+
     thing.save()
         .then(() => {
             res.status(201).json({
@@ -38,11 +49,12 @@ exports.getOneThing = (req, res, next) => {
 
 exports.modifyThing = (req, res, next) => {
     const thing = new Thing({
-        _id: req.params.id,
-        title: req.body.title,
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
         description: req.body.description,
         imageUrl: req.body.imageUrl,
-        userId: req.body.userId
+        mainPepper: req.body.mainPepper,
+        heat: req.body.mainPepper
     });
     Thing.updateOne({ _id: req.params.id }, thing).then(
         () => {
