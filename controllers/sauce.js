@@ -1,15 +1,13 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const Thing = require('../models/sauce');
+const Sauce = require('../models/sauce');
 
-exports.createThing = (req, res, next) => {
-    console.log(req.file)
-    //not thing, sauce
+exports.createSauce = (req, res, next) => {
     const data = JSON.parse(req.body.sauce)
 
     const file = 'http://localhost:3000/' + req.file.path
 
-    const thing = new Thing({
+    const sauce = new Sauce({
         name: data.name,
         manufacturer: data.manufacturer,
         description: data.description,
@@ -20,7 +18,7 @@ exports.createThing = (req, res, next) => {
     });
 
 
-    thing.save()
+    sauce.save()
         .then(() => {
             res.status(201).json({
                 message: 'Post saved successfully!'
@@ -33,12 +31,12 @@ exports.createThing = (req, res, next) => {
         );
 };
 
-exports.getOneThing = (req, res, next) => {
-    Thing.findOne({
+exports.getOneSauce = (req, res, next) => {
+    Sauce.findOne({
         _id: req.params.id
     }).then(
-        (thing) => {
-            res.status(200).json(thing);
+        (sauce) => {
+            res.status(200).json(sauce);
         }
     ).catch(
         (error) => {
@@ -47,19 +45,20 @@ exports.getOneThing = (req, res, next) => {
     );
 };
 
-exports.modifyThing = (req, res, next) => {
-    const thing = new Thing({
-        name: req.body.name,
-        manufacturer: req.body.manufacturer,
-        description: req.body.description,
-        imageUrl: req.body.imageUrl,
-        mainPepper: req.body.mainPepper,
-        heat: req.body.mainPepper
-    });
-    Thing.updateOne({ _id: req.params.id }, thing).then(
+exports.modifySauce = (req, res, next) => {
+
+    let data = req.body.sauce
+
+    if (req.body.sauce) {
+
+        data = JSON.parse(req.body.sauce)
+        data.imageUrl = 'http://localhost:3000/' + req.file.path
+    }
+
+    Sauce.updateOne({ _id: req.params.id }, data).then(
         () => {
             res.status(201).json({
-                message: 'Thing updated successfully!'
+                message: 'Sauce updated successfully!'
             });
         }
     ).catch(
@@ -69,20 +68,20 @@ exports.modifyThing = (req, res, next) => {
     );
 };
 
-exports.deleteThing = (req, res, next) => {
-    Thing.findOne({ _id: req.params.id }).then(
-        (thing) => {
-            if (!thing) {
+exports.deleteSauce = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id }).then(
+        (sauce) => {
+            if (!sauce) {
                 return res.status(404).json({
                     error: new Error('Objet non trouvé !')
                 });
             }
-            if (thing.userId !== req.auth.userId) {
+            if (sauce.userId !== req.auth.userId) {
                 return res.status(401).json({
                     error: new Error('Requête non autorisée !')
                 });
             }
-            Thing.deleteOne({ _id: req.params.id }).then(
+            Sauce.deleteOne({ _id: req.params.id }).then(
                 () => {
                     res.status(200).json({
                         message: 'Deleted!'
@@ -97,11 +96,11 @@ exports.deleteThing = (req, res, next) => {
     );
 };
 
-exports.getAllStuff = (req, res, next) => {
-    Thing.find({}).then(
-        (things) => {
+exports.getAllSauces = (req, res, next) => {
+    Sauce.find({}).then(
+        (sauces) => {
             console.log(req.body);
-            res.status(200).json(things);
+            res.status(200).json(sauces);
         }
     ).catch(
         (error) => {
@@ -109,3 +108,31 @@ exports.getAllStuff = (req, res, next) => {
         }
     );
 };
+
+exports.userLikes = (req, res, next) => {
+    Sauce.findOne({ _id: req.params.id})
+        .then(sauce => {
+            if (req.likes === 1) {
+                sauce.usersLiked.push(req.userId)
+            } else if (req.likes === 0) {
+                const userLikedIndex = sauce.usersLiked.indexOf(req.userId)
+
+                if (userLikedIndex >= 0) {
+                    sauce.usersLiked.splice(userLikedIndex, 1)
+                }
+                else {
+                    const userDislikedIndex = sauce.usersDisliked.indexOf(req.userId)
+                    
+                    sauce.usersDisliked.splice(userDislikedIndex, 1)
+                }
+            }
+            else {
+                sauce.usersDisliked.push(req.userId)
+
+
+            }
+
+            sauce.update({ _id: req.params.id }, sauce)
+        })
+} 
+
