@@ -112,27 +112,33 @@ exports.getAllSauces = (req, res, next) => {
 exports.userLikes = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => {
-            if (req.likes === 1) {
-                sauce.usersLiked.push(req.userId)
-            } else if (req.likes === 0) {
-                const userLikedIndex = sauce.usersLiked.indexOf(req.userId)
+            const userId = req.body.userId
+            const like = req.body.like
+
+            if (like === 1) {
+                sauce.usersLiked.push(userId)
+            } else if (like === 0) {
+                const userLikedIndex = sauce.usersLiked.indexOf(userId)
 
                 if (userLikedIndex >= 0) {
                     sauce.usersLiked.splice(userLikedIndex, 1)
                 }
                 else {
-                    const userDislikedIndex = sauce.usersDisliked.indexOf(req.userId)
+                    const userDislikedIndex = sauce.usersDisliked.indexOf(userId)
                     
                     sauce.usersDisliked.splice(userDislikedIndex, 1)
                 }
             }
             else {
-                sauce.usersDisliked.push(req.userId)
-
-
+                sauce.usersDisliked.push(userId)
             }
-
-            sauce.update({ _id: req.params.id }, sauce)
-        })
+            sauce.save().then(savedDoc => {
+                res.status(200).json({message: 1});
+            }).catch (
+                (error) => {
+                    res.status(400).json(error);
+                }
+            );
+        }) 
 } 
 
