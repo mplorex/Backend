@@ -16,7 +16,10 @@ exports.createSauce = (req, res, next) => {
         heat: data.heat,
         userId: data.userId
     });
+    console.log(sauce)
 
+
+console.log(error)
 
     sauce.save()
         .then(() => {
@@ -112,33 +115,31 @@ exports.getAllSauces = (req, res, next) => {
 exports.userLikes = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id})
         .then(sauce => {
+            const updateDoc = {}
             const userId = req.body.userId
-            const like = req.body.like
 
-            if (like === 1) {
-                sauce.usersLiked.push(userId)
-            } else if (like === 0) {
-                const userLikedIndex = sauce.usersLiked.indexOf(userId)
-
-                if (userLikedIndex >= 0) {
-                    sauce.usersLiked.splice(userLikedIndex, 1)
-                }
-                else {
-                    const userDislikedIndex = sauce.usersDisliked.indexOf(userId)
-                    
-                    sauce.usersDisliked.splice(userDislikedIndex, 1)
+            if (req.params.likes === 1) {
+                updateDoc.$inc = { likes: 1}
+                updateDoc.$push = { usersLiked: userId }
+            } else if (req.params.likes === -1) {
+                updateDoc.$inc = { dislike: 1}
+                updateDoc.$push = { usersDisliked: userId}
+            } else {
+                if (sauce.usersDisliked.includes(userId)) {
+                    updateDoc.$inc = {dislike: -1}
+                    updateDoc.$pull = { usersDisliked: userId}
+                } else {
+                    updateDoc.$inc = { likes: -1}
+                    updateDoc.$pull = { usersLiked: userId }
                 }
             }
-            else {
-                sauce.usersDisliked.push(userId)
-            }
-            sauce.save().then(savedDoc => {
-                res.status(200).json({message: 1});
-            }).catch (
-                (error) => {
-                    res.status(400).json(error);
-                }
-            );
+            Sauce.updateOne({ _id: req.params.id }, updateDoc)
+                .then(() => res.status(200).json({ message: 'successful!' }))
+                .catch(
+                    (error) => {
+                        res.status(400).json(error);
+                    }
+                )
         }) 
 } 
 

@@ -9,7 +9,6 @@ const userRoutes = require('./routes/user');
 
 const app = express();
 
-
 mongoose.connect(process.env.MONGODB_URL)
     .then(() => {
         console.log('Successfully connected to MongoDB Atlas!');
