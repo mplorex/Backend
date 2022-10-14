@@ -1,23 +1,13 @@
 require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 const path = require('path');
-const Sauce = require('./models/sauce');
-const stuffRoutes = require('./routes/routers');
+const postRoutes = require('./routes/routers');
 const userRoutes = require('./routes/user');
 
 const app = express();
 
-mongoose.connect(process.env.MONGODB_URL)
-    .then(() => {
-        console.log('Successfully connected to MongoDB Atlas!');
-    })
-    .catch((error) => {
-        console.log('Unable to connect to MongoDB Atlas!');
-        console.error(error);
-    });
-
+//Headers
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -27,8 +17,8 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
+//Routes
 app.use('/images', express.static(path.join(__dirname, 'images')));
-
 app.use('/api/sauces', stuffRoutes);
 app.use('/api/auth', userRoutes);
 
