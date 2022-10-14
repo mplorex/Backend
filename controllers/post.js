@@ -1,5 +1,4 @@
 const db = require('../config/database')
-const fs = require('fs');
 
 exports.creatPost = (req, res) => {
     const body = req.file ?
