@@ -1,6 +1,7 @@
-const db = require('../config/database');
 const bcrypt = require('bcrypt');
-const fs = require('fs');
+const User = require('../models/user');
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
 
 exports.addDataToUserProfile = (req, res) => {
 	function isBodyEmpty(bio) {
