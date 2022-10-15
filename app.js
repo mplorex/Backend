@@ -2,9 +2,13 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const postRoutes = require('./routes/routers');
-const userRoutes = require('./routes/user');
+const postRoutes = require('./routes/post');
+const  { Sequelize } = require('sequelize');
+// const userRoutes = require('./routes/user');
 
+
+
+// start web server
 const app = express();
 
 //Headers
@@ -19,7 +23,7 @@ app.use(bodyParser.json());
 
 //Routes
 app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/api/sauces', stuffRoutes);
+app.use('/api/post', postRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
