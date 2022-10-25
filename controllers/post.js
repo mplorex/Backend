@@ -11,6 +11,14 @@ exports.modify = (req, res, next) => {
 exports.delete = (req, res, next) => { 
 };
 exports.getAll = (req, res, next) => { 
+    Post.findAll()
+    .then((posts) => {
+        console.log(posts);
+        res.status(200).json(posts);
+    })
+    .catch((error) => {
+        res.status(400).json(error);
+    })
 };
 exports.userLikes = (req, res, next) => { 
 };

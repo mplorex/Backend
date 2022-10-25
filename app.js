@@ -4,9 +4,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const postRoutes = require('./routes/post');
 const  { Sequelize } = require('sequelize');
-// const userRoutes = require('./routes/user');
-
-
+const userRoutes = require('./routes/user');
 
 // start web server
 const app = express();
