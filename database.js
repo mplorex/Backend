@@ -3,8 +3,8 @@ const { Sequelize } = require('sequelize');
 //setup databse
 const sequelize = new Sequelize('sqlite::memory:') // Example for sqlite
 
-sequelize.authenticate()
-    ,then(() => {
+;sequelize.authenticate()
+    .then(() => {
         console.log('Connection has been established successfully.');
     })
     .catch (() => {

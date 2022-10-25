@@ -24,13 +24,3 @@ User.init ({
     sequelize, // We need to pass the connection instance
     modelName: 'User' //We need to choose the model name
 });
-
-const Post = sequelize.define("post", {
-    name: DataTypes.TEXT,
-    favoriteColor: {
-        type: DataTypes.TEXT,
-        defaultValue: 'green'
-    },
-    age: DataTypes.INTEGER,
-    cash: DataTypes.INTEGER
-});
