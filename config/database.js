@@ -1,9 +1,18 @@
-const mysql = require('mysql');
+const { Sequelize } = require('sequelize');
+const dotenv = require('dotenv');
 
-module.exports = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    charset: 'utf8mb4',
+dotenv.config();
+
+//setup databse
+const sequelize = new Sequelize('Servers', 'username', 'pizza1234', {
+    host: 'localhost',
+    dialect: 'postgres',
+    operatorsAliases: false,
+
+    pools: {
+        max: 5,
+        min: 0,
+        acquire: 30000,
+        idle: 10000
+    },
 });

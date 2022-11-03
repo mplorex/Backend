@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const fs = require('fs');
-const Post = require('../models/post');
+//const Post = require('../models/post');
 
 exports.create = (req, res, next) => { 
     const body = req.file ?

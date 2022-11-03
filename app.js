@@ -1,4 +1,3 @@
-require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -8,6 +7,34 @@ const userRoutes = require('./routes/user');
 
 // start web server
 const app = express();
+
+// Database
+const db = require('./config/database');
+
+// Test DB
+db.authenticate()
+    .then(() => {
+        console.log('Connection has been established successfully.');
+    })
+    .catch (() => {
+        console.error('Unable to connect to database', error)
+    })
+
+    module.exports = db
+
+//Handlebars
+app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
+
+
+// Bodyparser
+app.use(express.urlencoded({ extended: false}));
+
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+//Index route
+app.get('/', (req, res) => res.render('index', { layout: 'landing' }));
 
 //Headers
 app.use((req, res, next) => {
@@ -25,3 +52,7 @@ app.use('/api/post', postRoutes);
 app.use('/api/auth', userRoutes);
 
 module.exports = app;
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, console.log('Server strarted on port ${PORT}'));
