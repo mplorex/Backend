@@ -16,3 +16,5 @@ const sequelize = new Sequelize('Servers', 'username', 'pizza1234', {
         idle: 10000
     },
 });
+
+module.exports = sequelize
