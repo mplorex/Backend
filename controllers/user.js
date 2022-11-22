@@ -4,15 +4,24 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
 exports.signup = (req, res, next) => {
-    const token = 123
-    // Create a new user
-    User.create(req.body)
-    .then(user => {
-        res.send(201).json({ token, user})
-    })
-    .catch(error => {
-        res.send(401).json(error)
-    })
+    bcrypt.hash(req.body.password, 10).then(
+        (hash) => {
+            User.create(
+                {
+                    firstName: req.body.firstName,
+                    email: req.body.email,
+                    password: hash
+                }
+            ).then(user => {
+                res.status(201).json({ token, user })
+                })
+                .catch((error) => {
+                    console.log(error)
+                    res.status(400).json(error);
+                }
+            );
+        }
+    );
 };
 
 exports.login = (req, res, next) => {
