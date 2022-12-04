@@ -4,12 +4,9 @@ class User extends Model {}
 
 User.init ({
     // Model attributes are defined here
-    firstName: {
+    name: {
         type: DataTypes.STRING,
         allowNull:false
-    },
-    lastName: {
-        type: DataTypes.STRING
     },
     password: {
         type: DataTypes.STRING,
@@ -22,7 +19,7 @@ User.init ({
 }, {
     //Other model option go here
     sequelize, // We need to pass the connection instance
-    modelName: 'User' //We need to choose the model name
+    modelName: 'user' //We need to choose the model name
 });
 
 module.exports = User

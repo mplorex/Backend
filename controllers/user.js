@@ -8,7 +8,7 @@ exports.signup = (req, res, next) => {
         (hash) => {
             User.create(
                 {
-                    firstName: req.body.firstName,
+                    name: req.body.name,
                     email: req.body.email,
                     password: hash
                 }
@@ -26,11 +26,19 @@ exports.signup = (req, res, next) => {
 
 exports.login = (req, res, next) => {
     User.findOne({ where: { email: req.body.email} })
-    .then(user => {
+    const token = jwt.sign(
+        { userId: User._id },
+        process.env.JWT_TOKEN_SECRET,
+        { expiresIn: '24h' })
+        .then(user => {
         if (user === null) {
             res.send(404)
         } else {
             res.send({ user, token })
         }
+    }) 
+    .catch((error) => {
+        console.log(error)
+        res.status(400).json(error);
     })
 }

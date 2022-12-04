@@ -3,6 +3,15 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const postRoutes = require('./routes/post');
 const userRoutes = require('./routes/user');
+const sequelize = require('./config/database.js');
+
+sequelize.authenticate()
+	.then(() => {
+		console.log('Connection has been established successfully.');
+	})	
+	.catch(error => {
+		console.error('Unable to connect to the database:', error);
+	})
 
 // start web server
 const app = express();
