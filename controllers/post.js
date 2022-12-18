@@ -76,5 +76,3 @@ exports.getAll = (req, res, next) => {
         res.status(400).json(error);
     })
 };
-exports.userLikes = (req, res, next) => { 
-};
