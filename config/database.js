@@ -17,4 +17,12 @@ const sequelize = new Sequelize('postgres', 'postgres', 'pizza1234', {
     },
 });
 
+sequelize.sync({ force: true })
+.then(() => {
+console.log("All models were synchronized successfully.");
+}).catch ((error) => {
+    console.log(error)
+})
+
 module.exports = sequelize
+
