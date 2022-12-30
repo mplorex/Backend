@@ -8,7 +8,7 @@ Post.init ({
         type: DataTypes.STRING,
         allowNull:true
     },
-    image: {
+    imageUrl: {
         type: DataTypes.STRING,
         allowNull:true
     },
@@ -19,6 +19,10 @@ Post.init ({
     video: {
         type: DataTypes.STRING,
         allowNull:true
+    },
+    author: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
 }, {
     //Other model option go here
