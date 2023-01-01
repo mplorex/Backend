@@ -29,23 +29,21 @@ exports.login = (req, res, next) => {
     .then(user => {
         if (!user) {
             return res.send(404)
-        }bcrypt.compare(req.body.password, user.password)
+        }
+        bcrypt.compare(req.body.password, user.password)
             .then(valid => {
                 if (!valid) {
                     return res.status(401).json({ error: 'bad password'})
                 }
                 const token = jwt.sign(
                     { userId: User._id },
-                    process.env.JWT_TOKEN_SECRET,
+                    'secert',
                     { expiresIn: '24h' })
-                    .then(user => {
-                    if (user === null) {
-                        res.send(404)
-                    } else {
-                        res.send({ user, token })
-                    }
-                }) 
-                .catch((error) => {
+                    res.status(201).json ({
+                        token,
+                        userName: user.name
+                    })
+                    .catch((error) => {
                     console.log(error)
                     res.status(400).json(error);
                 })
