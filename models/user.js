@@ -18,9 +18,9 @@ User.init ({
         allowNull: false
     }
 }, {
-    //Other model option go here
-    sequelize, // We need to pass the connection instance
-    modelName: 'user' //We need to choose the model name
+    //model options
+    sequelize, 
+    modelName: 'user' 
 });
 
 User.hasMany(Post)
