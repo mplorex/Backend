@@ -3,7 +3,6 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-//setup databse
 const sequelize = new Sequelize('postgres', 'postgres', 'pizza1234', {
     host: 'localhost',
     dialect: 'postgres',

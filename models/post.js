@@ -5,7 +5,8 @@ class Post extends Model {}
 Post.init ({
     description: {
         type: DataTypes.STRING,
-        allowNull:true
+        allowNull:true,
+        autoincrement: false
     },
     imageUrl: {
         type: DataTypes.STRING,
@@ -16,8 +17,8 @@ Post.init ({
         allowNull:false
     }
 }, {
-    //Other model option go here
-    sequelize, // We need to pass the connection instance
+    //model option
+    sequelize, 
     modelName: 'Post' 
 });
 

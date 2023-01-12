@@ -3,15 +3,16 @@ const fs = require('fs');
 const Post = require('../models/post');
 
 exports.create = (req, res, next) => { 
-    const data = JSON.parse(req.body.post)
-
-    const file = 'http://localhost:3000/' + req.file.path
+    const data = req.body;
+    console.log("File is : ", req.file);
+    console.log ("title: ", data.title);
+    const file = 'http://localhost:3000/' + req.file.path;
 
     const post = Post.build({ 
-        title: req.body.title,
-        description: req.body.description,
+        title: data.title,
+        description: data.description,
         imageUrl: file,
-        userId: req.body.userId
+        userId: data.userId
     })
 
     post.save()
@@ -27,8 +28,8 @@ exports.create = (req, res, next) => {
         );
 };
 
-exports.getOne = (req, res, next) => { 
-    const post = Post.getOne({});
+exports.getOne = async (req, res, next) => { 
+    const post = Post.findOne({where: {title:"any"}});
     if (project === null ) {
         console.log('Not found!');
     } else {
@@ -36,8 +37,8 @@ exports.getOne = (req, res, next) => {
     }
 };
 exports.modify = (req, res, next) => { 
-    const data = JSON.parse(req.body.post)
-    Post.update({ _id: req.params.id})
+    Post.update({ id: req.params.id}, {
+    })
     .then (() => {
         res.status(201).json({
             message: 'Post updated successfully!'
