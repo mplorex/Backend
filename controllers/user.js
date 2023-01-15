@@ -15,9 +15,9 @@ exports.signup = (req, res, next) => {
             ).then(user => {
                 const token = jwt.sign(
                     { userId: user._id },
-                    process.env.JWT_TOKEN_SECRET, 
+                    process.env.JWT_TOKEN_SECRET,  // 'secert',
                     { expiresIn: '24h' });
-                    console.log ("Got token: ", token);
+                    console.log ("Got signup token: ", token);
                 res.status(201).json({ token, user })
                 })
                 .catch((error) => {
@@ -42,7 +42,7 @@ exports.login = (req, res, next) => {
                 }
                 const token = jwt.sign(
                     { userId: User._id },
-                    process.env.JWT_TOKEN_SECRET, 
+                    process.env.JWT_TOKEN_SECRET, ///'secert',
                     { expiresIn: '24h' })
                     res.status(201).json ({
                         token,

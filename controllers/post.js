@@ -3,10 +3,10 @@ const fs = require('fs');
 const Post = require('../models/post');
 
 exports.create = (req, res, next) => { 
-    const data = req.body;
+    const data = req.body;//JSON.parse()
     console.log("File is : ", req.file);
     console.log ("title: ", data.title);
-    const file = 'http://localhost:3000/' + req.file.path;
+    const file = 'http://localhost:3000/' + req.file.path
 
     const post = Post.build({ 
         title: data.title,
