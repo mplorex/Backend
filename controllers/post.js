@@ -4,16 +4,20 @@ const Post = require('../models/post');
 
 exports.create = (req, res, next) => { 
     const data = req.body;//JSON.parse()
-    console.log("File is : ", req.file);
     console.log ("title: ", data.title);
-    const file = 'http://localhost:3000/' + req.file.path
-
-    const post = Post.build({ 
+    
+    const postData = {
         title: data.title,
         description: data.description,
-        imageUrl: file,
         userId: data.userId
-    })
+    } 
+    
+    if ( req.file ){
+        console.log("File is : ", req.file);
+        postData.imageUrl = 'http://localhost:3000/' + req.file.path;
+    }
+
+    const post = Post.build(postData)
 
     post.save()
         .then(() => {
