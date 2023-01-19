@@ -3,7 +3,7 @@ const fs = require('fs');
 const Post = require('../models/post');
 
 exports.create = (req, res, next) => { 
-    const data = req.body;//JSON.parse()
+    const data = req.body;
     console.log ("title: ", data.title);
     
     const postData = {
