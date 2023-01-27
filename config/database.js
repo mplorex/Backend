@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const sequelize = new Sequelize('postgres', 'postgres', 'pizza1234', {
+const sequelize = new Sequelize('postgres', 'postgres', '#P$7hM', {
     host: 'localhost',
     dialect: 'postgres',
     operatorsAliases: false,
