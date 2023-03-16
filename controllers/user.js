@@ -33,25 +33,19 @@ exports.login = (req, res, next) => {
     User.findOne({ where: { email: req.body.email} })
     .then(user => {
         if (!user) {
-            return res.send(404)
+            return res.sendStatus(404)
         }
         bcrypt.compare(req.body.password, user.password)
             .then(valid => {
                 if (!valid) {
                     return res.status(401).json({ error: 'bad password'})
-                }
-                const token = jwt.sign(
-                    { userId: User._id },
-                    process.env.JWT_TOKEN_SECRET, ///'secert',
-                    { expiresIn: '24h' })
-                    res.status(201).json ({
-                        token,
-                        userName: user.name
-                    })
-                    .catch((error) => {
-                    console.log(error)
-                    res.status(400).json(error);
-                })
+                }               
             })
+            const token = jwt.sign(
+                { userId: user._id },
+                process.env.JWT_TOKEN_SECRET,  // 'secert',
+                { expiresIn: '24h' });
+                console.log ("Got signup token: ", token);
+            res.status(201).json({ token, user })
     })
 }

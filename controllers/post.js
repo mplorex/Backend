@@ -33,8 +33,8 @@ exports.create = (req, res, next) => {
 };
 
 exports.getOne = async (req, res, next) => { 
-    const post = Post.findOne({where: {title:"any"}});
-    if (project === null ) {
+    const post = Post.findOne({where: {title:"data.title"}});
+    if (post === null ) {
         console.log('Not found!');
     } else {
         console.log(post instanceof Post);
@@ -65,7 +65,9 @@ exports.delete = (req, res, next) => {
 };
 
 exports.getAll = (req, res, next) => { 
-    Post.findAll()
+    const post = Post.findAll({
+        include: (req.query.include === 'user' ? [{ model: Post.User, attributes: ['username'] }] : '')
+    })
     .then((posts) => {
         console.log(posts);
         res.status(200).json(posts);
