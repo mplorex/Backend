@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-const fs = require('fs');
 const Post = require('../models/post');
 
 exports.create = (req, res, next) => { 
@@ -42,7 +40,14 @@ exports.getOne = async (req, res, next) => {
 };
 exports.modify = (req, res, next) => { 
     Post.update({ id: req.params.id}, {
+        where: {
+            id: req.params.id,
+            title: req.body,
+            description: req.body,
+            imageUrl: req.body
+        }
     })
+
     .then (() => {
         res.status(201).json({
             message: 'Post updated successfully!'
@@ -51,10 +56,17 @@ exports.modify = (req, res, next) => {
         res.status(400).json(error)
     })
 };
-exports.delete = (req, res, next) => { 
-    Post.findOne({ _id: req.params.id })
+exports.destroy = (req, res, next) => { 
+    Post.findOne({ id: req.params.id }, {
+        where: {
+            id: req.params.id,
+            title: req.body,
+            description: req.body,
+            imageUrl: req.body
+        }
+    })
     .then((post) => {
-        Post.delete({ _id: req.params.id }).then (() => {
+        Post.destroy({ _id: req.params.id }).then (() => {
             res.status(200).json({
                 message: 'Post deleted'
             })
