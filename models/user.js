@@ -20,7 +20,7 @@ User.init ({
 }, {
     //model options
     sequelize, 
-    modelName: 'user' 
+    modelName: 'User' 
 });
 
 User.hasMany(Post)
