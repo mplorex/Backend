@@ -15,6 +15,12 @@ Post.init ({
     title: {
         type: DataTypes.STRING,
         allowNull:false
+    },
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull:false,
+        autoIncrement:true
     }
 }, {
     //model option
