@@ -49,3 +49,44 @@ exports.login = (req, res, next) => {
             res.status(201).json({ token, user })
     })
 }
+
+//Create Delete and Modify option for user
+
+exports.modify = (req, res, next) => { 
+    User.update({ where: { 
+        name: req.body.name,
+        email: req.body.email,
+        password: hash
+    } })
+    .then (() => {
+        res.status(201).json({
+            message: 'User updated successfully!'
+        })
+    }).catch ((error) => {
+        res.status(400).json(error)
+    })
+};
+
+exports.destroy = (req, res, next) => { 
+    User.findOne({ where: {
+            name: req.body.name,
+            email: req.body.email,
+            password: hash
+        }
+    })
+    .then((user) => {
+        User.destroy({ where: {
+            name: req.body.name,
+            email: req.body.email,
+            password: hash
+        } 
+    })
+    .then (() => {
+            res.status(200).json({
+                message: 'User deleted'
+            })
+        }).catch ((error) => {
+            res.status(400).json(error)
+        })
+    })
+};
