@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
         }
         const token = req.headers.authorization.split(' ')[1];
         console.log(token);
-        const decodedToken = jwt.verify(token);
+        const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET );
         const userId = decodedToken.userId;
         const now = Date.now() / 1000;
         if (decodedToken.exp < now) {
