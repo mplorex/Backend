@@ -18,10 +18,8 @@ exports.create = (req, res, next) => {
     const post = Post.build(postData)
 
     post.save()
-        .then(() => {
-            res.status(201).json({
-                message: 'Post saved successfully!'
-            });
+        .then((postData) => {
+            res.status(201).json(postData);
         }
         ).catch(
             (error) => {

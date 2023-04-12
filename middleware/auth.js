@@ -7,8 +7,8 @@ module.exports = (req, res, next) => {
             throw 'Token authenticated missing!';
         }
         const token = req.headers.authorization.split(' ')[1];
-        console.log("token is: ", process.env.JWT_TOKEN_SECRET );
-        const decodedToken = jwt.verify(token, process.env.JWT_TOKEN_SECRET );
+        console.log(token);
+        const decodedToken = jwt.verify(token);
         const userId = decodedToken.userId;
         const now = Date.now() / 1000;
         if (decodedToken.exp < now) {
