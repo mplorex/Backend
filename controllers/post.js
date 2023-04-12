@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const fs = require('fs');
 const Post = require('../models/post');
 
 exports.create = (req, res, next) => { 
@@ -7,7 +9,8 @@ exports.create = (req, res, next) => {
     const postData = {
         title: data.title,
         description: data.description,
-        userId: data.userId
+        userId: data.userId,
+        image: data.file
     } 
     
     if ( req.file ){
