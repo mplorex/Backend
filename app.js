@@ -5,6 +5,7 @@ const postRoutes = require('./routes/post');
 const userRoutes = require('./routes/user');
 const sequelize = require('./config/database.js');
 
+/*sequelize.sync({ force: true });*/
 sequelize.authenticate()
 	.then(() => {
 		console.log('Connection has been established successfully.');

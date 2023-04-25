@@ -79,7 +79,7 @@ exports.destroy = (req, res, next) => {
 
 exports.getAll = (req, res, next) => { 
     const post = Post.findAll({
-        include: (req.query.include === 'user' ? [{ model: Post.User, attributes: ['username'] }] : '')
+        include: (req.query.include === 'user' ? [{ model: Post.User, attributes: ['name'] }] : '')
     })
     .then((posts) => {
         console.log(posts);

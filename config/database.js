@@ -3,9 +3,9 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const sequelize = new Sequelize('postgres', 'postgres', 'pizza1234', {
+const sequelize = new Sequelize('groupomania', 'root', 'pizza1234', {
     host: 'localhost',
-    dialect: 'postgres',
+    dialect: 'mysql',
     operatorsAliases: false,
 
     pools: {
@@ -16,12 +16,12 @@ const sequelize = new Sequelize('postgres', 'postgres', 'pizza1234', {
     },
 });
 
-/*sequelize.sync()
+sequelize.sync()
 .then(() => {
 console.log("All models were synchronized successfully.");
 }).catch ((error) => {
     console.log(error)
-})*/
+})
 
 module.exports = sequelize
 
