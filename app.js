@@ -4,6 +4,7 @@ const path = require('path');
 const postRoutes = require('./routes/post');
 const userRoutes = require('./routes/user');
 const sequelize = require('./config/database.js');
+const markRead = require('./routes/userReadPosts')
 
 /*sequelize.sync({ force: true });*/
 sequelize.authenticate()
@@ -41,5 +42,6 @@ app.use(bodyParser.json());
 app.use('/images', express.static('images'));
 app.use('/api/posts', postRoutes);
 app.use('/api/auth', userRoutes);
+app.use('/api/read', markRead);
 
 module.exports = app;

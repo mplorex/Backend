@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
             throw 'Please provid a valid token!' 
         }
         else {
-            res.locals.userId = userId;
+            req.auth = {userId};
             next();
         }
     } catch {

@@ -1,17 +1,30 @@
 const UserReadPosts = require('../models/userReadPosts')
 
 exports.markRead = (req, res, next) => {
-    const postId = req.params.postId
-    const userId = res.auth.userId
+    const PostId = parseInt(req.params.postId)
+    const UserId = req.auth.userId
 
-    UserReadPosts.create({ userId, postId })
+    UserReadPosts.create({ UserId, PostId })
     .then(read => {
-        res.send(201)
+            res.status(201).json({read: true})
     })
-    .catch()
+    .catch(error => {
+        res.status(400).json(error)
+    })
 }
 
 exports.isRead = (req, res, next ) => {
-    const postId = req.params.postId
-    const userId = res.auth.userId
+    const PostId = parseInt(req.params.postId)
+    const UserId = req.auth.userId
+    UserReadPosts.findOne({ where: { UserId, PostId } })
+    .then(read => {
+        if(read){
+            res.status(200).json({read: true})
+        }else{
+            res.status(404)
+        }
+    })
+    .catch(error => {
+        res.status(400).json(error)
+    })
 }

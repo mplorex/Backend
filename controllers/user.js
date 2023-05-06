@@ -14,7 +14,7 @@ exports.signup = (req, res, next) => {
                 }
             ).then(user => {
                 const token = jwt.sign(
-                    { userId: user._id },
+                    { userId: user.id },
                     process.env.JWT_TOKEN_SECRET,  // 'secert',
                     { expiresIn: '24h' });
                     console.log ("Got signup token: ", token);
@@ -42,7 +42,7 @@ exports.login = (req, res, next) => {
                 }               
             })
             const token = jwt.sign(
-                { userId: user._id },
+                { userId: user.id },
                 process.env.JWT_TOKEN_SECRET,  // 'secert',
                 { expiresIn: '24h' });
                 console.log ("Got signup token: ", token);
